@@ -1,0 +1,163 @@
+'use client'
+import React, { use, useState } from 'react';
+import ConfirmPayment from './ConfirmPayment';
+import Sucess from './Sucess';
+import SelectCrypto from './SelectCrypto';
+
+const StepIndicator = ({ label, isActive, isCompleted }) => (
+  <div className="flex items-center gap-2 md:gap-3">
+    <div className={`w-4 h-4 md:w-5 md:h-5 rounded-full border-2 flex items-center justify-center ${
+      isActive ? 'border-green-500 bg-green-500' : 
+      isCompleted ? 'border-green-500' : 'border-gray-300'
+    }`}>
+      {isActive && <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-white rounded-full" />}
+      {isCompleted && <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-green-500 rounded-full" />}
+    </div>
+    <span className={`text-xs md:text-sm font-medium ${
+      isActive ? 'text-gray-900' : 'text-black'
+    }`}>
+      {label}
+    </span>
+  </div>
+);
+
+export default function BuyCrypto() {
+  const [payAmount, setPayAmount] = useState('3,000,000');
+  const [receiveAmount, setReceiveAmount] = useState('0.00207026');
+  const [payCurrency, setPayCurrency] = useState('VND');
+  const [receiveCurrency, setReceiveCurrency] = useState('BTC');
+  
+  const handleSwap = () => {
+    const tempAmount = payAmount;
+    const tempCurrency = payCurrency;
+    setPayAmount(receiveAmount);
+    setPayCurrency(receiveCurrency);
+    setReceiveAmount(tempAmount);
+    setReceiveCurrency(tempCurrency);
+  };
+  const [buyCrypto,setBuyCrypto]=useState("buycrypto");
+  const [isBuyCrypto,setIsBuyCrypto]=useState("buy");
+  const [isActive,setIsActive]=useState('buy');
+
+  return (
+    <>
+    
+    <div className=" bg-gray-50 p-4 md:p-12">
+      <div className="bg-white flex flex-col lg:flex-row rounded-2xl shadow-sm max-w-7xl mx-auto">
+        {/* Sidebar */}
+        <div className="w-full lg:w-64 bg-white border-b lg:border-b-0 lg:border-r border-gray-200 p-4 md:p-6">
+          <div className="flex lg:flex-col gap-2">
+            <div  onClick={()=>{setIsBuyCrypto("buy");
+                setIsActive('buy')
+              }} className={`flex-1 lg:flex-none flex items-center gap-3 px-4 py-3 hover:bg-gray-50 cursor-pointer border-l-11 ${isActive==='buy'?`  border-red-500 rounded-r`:`border-transparent`} `}>
+              <span onClick={()=>setIsBuyCrypto(!isBuyCrypto)} className="text-red-500 font-medium text-sm md:text-base">Buy Crypto</span>
+            </div>
+            <div  onClick={()=>{setIsBuyCrypto("sell");
+                setIsActive('sell')
+              }} className={`flex-1  lg:flex-none flex items-center gap-3 px-4 py-3 hover:bg-gray-50  cursor-pointer border-l-11 ${isActive==='sell'?`border-red-500 rounded-r`:`border-transparent`}`}>
+              <span className="text-gray-700 font-medium text-sm md:text-base">Sell Crypto</span>
+            </div>
+          </div>
+        </div>
+        {isBuyCrypto==='buy'?<>{buyCrypto==='buycrypto'? <div className="flex-1 p-4 md:p-8">
+          <div className="max-w-4xl mx-auto">
+            {/* Progress Steps */}
+            <div className="flex items-center justify-center gap-4 md:gap-8 lg:gap-12 mb-8 md:mb-12 overflow-x-auto pb-2">
+              <StepIndicator label="Select currency" isActive={true} />
+              <div className="w-8 md:w-16 lg:w-24 h-px bg-gray-300 flex-shrink-0" />
+              <StepIndicator label="Confirm Payment" isActive={false} />
+              <div className="w-8 md:w-16 lg:w-24 h-px bg-gray-300 flex-shrink-0" />
+              <StepIndicator label="Payment Details" isActive={false} />
+            </div>
+
+            {/* Exchange Card */}
+            <div className="p-4 md:p-8">
+              <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">Select Currency</h2>
+              <p className="text-sm md:text-base text-gray-600 mb-6 md:mb-8">
+                Reference Price: 1,450,939,280.43 VND/BTC
+              </p>
+
+              <div className="space-y-6 ">
+                {/* Pay and Receive Section */}
+                <div className="flex  lg:flex-row gap-4 lg:gap-4 items-start">
+                  {/* Pay Section */}
+                  <div className="w-full lg:w-auto">
+                    <label className="block text-sm font-semibold text-gray-900 mb-3">
+                      Pay
+                    </label>
+                    <div className="relative" style={{ width: '340px', maxWidth: '100%' }}>
+                      <input
+                        type="text"
+                        value={payAmount}
+                        onChange={(e) => setPayAmount(e.target.value)}
+                        className="w-full px-6 py-4 pr-36 border-2 border-gray-200 rounded-xl text-xl font-semibold text-gray-900 focus:outline-none focus:border-red-500 transition-colors"
+                      />
+                      <button className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                        <span className="w-6 h-6 rounded-full bg-yellow-400 flex items-center justify-center text-white text-xs font-bold">
+                          ₫
+                        </span>
+                        <span className="font-semibold text-gray-900">{payCurrency}</span>
+                        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Swap Button */}
+                  <div className="flex lg:flex-col justify-center items-center py-2 lg:pt-8 mr-8 ml-8 mt-2 ">
+                    <button
+                      onClick={handleSwap}
+                      className="w-10 h-10 flex-shrink-0 cursor-pointer"
+                    >
+                      <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none">
+                        <rect width="40" height="40" rx="20" fill="#777E90"/>
+                        <path d="M28.6687 14.0245L26.4466 11.3579C26.3069 11.196 26.1198 11.1064 25.9256 11.1084C25.7314 11.1105 25.5456 11.2039 25.4083 11.3687C25.271 11.5335 25.1931 11.7565 25.1914 11.9895C25.1897 12.2226 25.2644 12.4471 25.3993 12.6147L26.357 13.764H13.3314C12.7421 13.764 12.1769 14.045 11.7602 14.545C11.3435 15.0451 11.1094 15.7234 11.1094 16.4306V19.0971C11.1094 19.3329 11.1874 19.559 11.3263 19.7257C11.4652 19.8923 11.6536 19.986 11.8501 19.986C12.0465 19.986 12.2349 19.8923 12.3738 19.7257C12.5127 19.559 12.5907 19.3329 12.5907 19.0971V16.4306C12.5907 16.1948 12.6688 15.9688 12.8077 15.8021C12.9466 15.6354 13.135 15.5417 13.3314 15.5417H26.357L25.3993 16.691C25.3286 16.773 25.2721 16.8711 25.2333 16.9795C25.1945 17.088 25.1741 17.2046 25.1732 17.3226C25.1723 17.4407 25.1911 17.5577 25.2283 17.6669C25.2656 17.7762 25.3206 17.8754 25.3901 17.9589C25.4597 18.0423 25.5424 18.1083 25.6334 18.153C25.7244 18.1977 25.8219 18.2202 25.9203 18.2192C26.0186 18.2182 26.1158 18.1936 26.2062 18.1471C26.2966 18.1005 26.3783 18.0328 26.4466 17.9479L28.6687 15.2813C28.8047 15.1128 28.8807 14.8875 28.8807 14.6529C28.8807 14.4183 28.8047 14.1929 28.6687 14.0245Z" fill="white"/>
+                        <path d="M28.1482 19.9883C27.9517 19.9883 27.7633 20.0819 27.6244 20.2486C27.4855 20.4153 27.4075 20.6414 27.4075 20.8771V23.5437C27.4075 23.7794 27.3295 24.0055 27.1906 24.1722C27.0517 24.3389 26.8633 24.4325 26.6668 24.4325H13.6412L14.5989 23.2832C14.7338 23.1156 14.8085 22.8911 14.8068 22.658C14.8051 22.425 14.7272 22.202 14.5899 22.0372C14.4526 21.8724 14.2668 21.779 14.0726 21.7769C13.8784 21.7749 13.6913 21.8645 13.5516 22.0264L11.3296 24.693C11.1934 24.8613 11.1172 25.0867 11.1172 25.3214C11.1172 25.556 11.1934 25.7814 11.3296 25.9498L13.5516 28.6164C13.6199 28.7012 13.7017 28.769 13.792 28.8155C13.8824 28.8621 13.9796 28.8866 14.0779 28.8877C14.1763 28.8887 14.2738 28.8662 14.3648 28.8215C14.4559 28.7768 14.5386 28.7108 14.6081 28.6274C14.6776 28.5439 14.7326 28.4447 14.7699 28.3354C14.8071 28.2262 14.8259 28.1092 14.825 27.9911C14.8242 27.8731 14.8037 27.7565 14.7649 27.648C14.7261 27.5396 14.6697 27.4415 14.5989 27.3595L13.6412 26.2102H26.6668C27.2561 26.2102 27.8213 25.9293 28.238 25.4292C28.6547 24.9291 28.8889 24.2509 28.8889 23.5437V20.8771C28.8889 20.6414 28.8108 20.4153 28.6719 20.2486C28.533 20.0819 28.3446 19.9883 28.1482 19.9883Z" fill="white"/>
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* Receive Section */}
+                  <div className="w-full lg:w-auto">
+                    <label className="block text-sm font-semibold text-gray-900 mb-3">
+                      Receive
+                    </label>
+                    <div className="relative" style={{ width: '340px', maxWidth: '100%' }}>
+                      <input
+                        type="text"
+                        value={receiveAmount}
+                        onChange={(e) => setReceiveAmount(e.target.value)}
+                        className="w-full px-6 py-4 pr-36 border-2 border-gray-200 rounded-xl text-xl font-semibold text-gray-900 focus:outline-none focus:border-red-500 transition-colors"
+                      />
+                      <button className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2 px-4 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                        <span className="w-6 h-6 rounded-full bg-orange-400 flex items-center justify-center text-white text-xs font-bold">
+                          ₿
+                        </span>
+                        <span className="font-semibold text-gray-900">{receiveCurrency}</span>
+                        <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Continue Button */}
+                <div className="flex  md:justify-end  pr-16">
+                  <button onClick={()=>setBuyCrypto("confirmPayment")} className="w-full md:w-auto px-8 md:px-12 py-3 md:py-4 bg-red-500 hover:bg-red-600 text-white font-semibold rounded-full shadow-lg transition-colors text-sm md:text-base cursor-pointer">
+                    Continue
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>:<ConfirmPayment buyCrypto={buyCrypto} setBuyCrypto={setBuyCrypto} isActive={isActive} setIsActive={setIsActive}/>}</>:<SelectCrypto/>}
+        
+  
+       
+      </div>
+    </div>
+    </>
+  );
+}
