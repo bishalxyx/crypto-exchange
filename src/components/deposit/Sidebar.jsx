@@ -14,7 +14,7 @@ export default function Sidebar() {
   const [historyOpen, setHistoryOpen] = useState(false)
 
   return (
-    <aside className="w-61 h-[870]  bg-white border-r flex flex-col justify-between py-6 px-4 ">
+    <aside className="w-61 h-[870] ml-6  bg-white border-r flex flex-col justify-between py-6 px-4 ">
       {/* === TOP SECTION === */}
       <div>
         {/* Profile */}

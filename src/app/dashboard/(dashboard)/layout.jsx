@@ -7,15 +7,14 @@ const layout = ({children}) => {
   return (
     <>
      <div className='bg-[#F7F7F7]'>
-        <div className='bg-white'>
+        {/* <div className='bg-white'>
         <Header text='black'/>
-        </div>
-        <div className='mt-6 flex '>
+        </div> */}
+        <div className='mt-6  flex '>
         <Sidebar/>
         {children}
         </div>
-        <Cta/>
-        <Footer/>
+        
         </div>
         </>
   )
