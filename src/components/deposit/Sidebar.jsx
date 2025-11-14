@@ -104,11 +104,12 @@ export default function Sidebar() {
             KYC Verification
           </div>
           </Link>
-
+          <Link href='/dashboard/ticket'>
           <div className="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg cursor-pointer">
             <Mail size={18} />
             Ticketing
           </div>
+          </Link>
 
           <div className="flex items-center gap-3 px-3 py-2 hover:bg-gray-50 rounded-lg cursor-pointer">
             <Settings size={18} />
